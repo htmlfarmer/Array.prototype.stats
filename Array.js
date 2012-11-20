@@ -1,11 +1,10 @@
-/*
+/* 
 
-  Array.prototype.stats 
-  
-  JavaScript Array Prototype Statistics Library
-    Version: 0.3 (Experimental)
-    Date: 11/2012
- 
+ Array.prototype.stats 
+   JavaScript Statistics Library for Arrays
+   Version: 0.3 (Experimental)
+   Date: 11/2012
+
 */
 
 // TODO: it might be good to have the average/median/mode calculated at the same time.
@@ -22,7 +21,6 @@ function Median(dataset) {
   }
 }
 
-// TODO : needs updating
 function AbsMedian(dataset) {
   var abs = dataset.map(Math.abs);
   var median = abs.sort(function(a, b) {return true ? a < b : false;});
@@ -36,7 +34,6 @@ function AbsMedian(dataset) {
   }
 }
 
-// note to self: null and 0 are the same in javascript unless you do !==
 function Primary(dataset) {
   var total = 0;
   var abstotal = 0;
@@ -53,7 +50,6 @@ function Primary(dataset) {
   return {total: total, abs: abstotal, count: count, average : total/count, geomean : Math.pow(geometric, 1/count)};
 }
 
-// note to self: null and 0 are the same in javascript unless you do !==
 function Mean(dataset) {
   if(!isNaN(dataset[0]) && dataset[0] !== "" && dataset[0] !== null){
     var total = dataset[0];
@@ -87,12 +83,15 @@ function Mean(dataset) {
   }
 }
 
-// meddev : median absolute deviation
-// Wikipedia Example: Consider the data (1, 1, 2, 2, 4, 6, 9). 
-// It has a median value of 2. The absolute deviations about 2 
-// are (1, 1, 0, 0, 2, 4, 7) which in turn have a median value of 1 
-// (because the sorted absolute deviations are (0, 0, 1, 1, 2, 4, 7)). 
-// So the median absolute deviation for this data is 1.
+/* 
+meddev : median absolute deviation
+ http://en.wikipedia.org/wiki/Median_absolute_deviation
+  Wikipedia Example: Consider the data (1, 1, 2, 2, 4, 6, 9). 
+   It has a median value of 2. The absolute deviations about 2 
+   are (1, 1, 0, 0, 2, 4, 7) which in turn have a median value of 1 
+   (because the sorted absolute deviations are (0, 0, 1, 1, 2, 4, 7)). 
+   So the median absolute deviation for this data is 1.
+*/
 function Deviations(dataset, median, avg) {
   var total = 0;
   var count = 0;
@@ -112,10 +111,13 @@ function Deviations(dataset, median, avg) {
   return {absdev : total/count, meddev : meddev, stddev: Math.sqrt(std/count), deviation : total, variance : std/count}; 
 }
 
-// Mode() 
-// Wikipedia: The mode is the number that appears most often in a set of numbers.
-// The mode of a discrete probability distribution is the value x at which its probability mass function takes its maximum value. In other words, it is the value that is most likely to be sampled.
-// The mode of a continuous probability distribution is the value x at which its probability density function has its maximum value, so, informally speaking, the mode is at the peak.
+/* 
+Mode() 
+  http://en.wikipedia.org/wiki/Mode_%28statistics%29
+   Wikipedia: The mode is the number that appears most often in a set of numbers.
+   The mode of a discrete probability distribution is the value x at which its probability mass function takes its maximum value. In other words, it is the value that is most likely to be sampled.
+   The mode of a continuous probability distribution is the value x at which its probability density function has its maximum value, so, informally speaking, the mode is at the peak.
+*/
 function Mode(dataset, average) {
   var mode = dataset[0];
   for (var i = 1; i < dataset.length; i++) {
@@ -126,9 +128,6 @@ function Mode(dataset, average) {
   return null; // TODO. 
 }
 
-// TODO: this function needs to be rewritten to 
-// return {absdev : function etc...} so that each element is only accessed when requested and not preprocessed
-// TODO: the median needs to be checked more carefully and filtered or re .map for each element if it is not a valid element it needs to be removed
 Array.prototype.stats = function () {
   var prime = Primary(this);
   this.total = prime.total; // sum of all the values in the array
